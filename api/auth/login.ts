@@ -1,8 +1,8 @@
-import { getPool, hashPassword, json } from '../_db';
+import { getPool, hashPassword, json, withJsonErrorHandling } from '../_db.js';
 
 export const config = { runtime: 'nodejs' };
 
-export default async function handler(req: Request): Promise<Response> {
+export default withJsonErrorHandling(async function handler(req: Request): Promise<Response> {
   if (req.method === 'OPTIONS') return json({}, 204);
   if (req.method !== 'POST') return json({ success: false, error: 'Method not allowed' }, 405);
 
@@ -48,5 +48,5 @@ export default async function handler(req: Request): Promise<Response> {
       createdAt: u.created_at, lastLogin: new Date().toISOString(),
     },
   });
-}
+});
 

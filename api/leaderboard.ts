@@ -1,9 +1,9 @@
-import { getPool, json } from './_db';
+import { getPool, json, withJsonErrorHandling } from './_db.js';
 // leaderboard.ts lives at api/leaderboard.ts, _db.ts at api/_db.ts
 
 export const config = { runtime: 'nodejs' };
 
-export default async function handler(req: Request): Promise<Response> {
+export default withJsonErrorHandling(async function handler(req: Request): Promise<Response> {
   if (req.method === 'OPTIONS') return json({}, 204);
   if (req.method !== 'GET') return json({ success: false, error: 'Method not allowed' }, 405);
 
@@ -39,4 +39,4 @@ export default async function handler(req: Request): Promise<Response> {
   }));
 
   return json({ success: true, leaderboard });
-}
+});

@@ -42,3 +42,24 @@ export function json(data: unknown, status = 200): Response {
   });
 }
 
+export function withJsonErrorHandling(
+  fn: (req: Request) => Promise<Response>
+): (req: Request) => Promise<Response> {
+  return async (req: Request): Promise<Response> => {
+    try {
+      return await fn(req);
+    } catch (err: unknown) {
+      console.error('Vercel API Error:', err);
+      return json(
+        {
+          success: false,
+          error:
+            'Terjadi kesalahan server database Supabase: ' +
+            (err instanceof Error ? err.message : String(err)),
+        },
+        500
+      );
+    }
+  };
+}
+
