@@ -9,7 +9,7 @@ export function getPool(): pg.Pool {
   if (!_pool) {
     _pool = new Pool({
       connectionString: process.env.DATABASE_URL ||
-        'postgresql://postgres:1234534314563423@db.ozpchgvcfypgeutzszsk.supabase.co:5432/postgres',
+        'postgresql://postgres.ozpchgvcfypgeutzszsk:1234534314563423@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres',
       ssl: { rejectUnauthorized: false },
       max: 3,
       idleTimeoutMillis: 20000,

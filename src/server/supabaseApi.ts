@@ -6,7 +6,7 @@ const { Pool } = pg;
 
 const DB_CONNECTION_STRING =
   process.env.DATABASE_URL ||
-  'postgresql://postgres:1234534314563423@db.ozpchgvcfypgeutzszsk.supabase.co:5432/postgres';
+  'postgresql://postgres.ozpchgvcfypgeutzszsk:1234534314563423@aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres';
 
 let poolInstance: pg.Pool | null = null;
 
