@@ -41,3 +41,4 @@ export function json(data: unknown, status = 200): Response {
     },
   });
 }
+
