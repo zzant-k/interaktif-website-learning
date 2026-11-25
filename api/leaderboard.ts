@@ -3,10 +3,7 @@ import { getPool, json, withJsonErrorHandling } from './_db.js';
 
 export const config = { runtime: 'nodejs' };
 
-export default withJsonErrorHandling(async function handler(req: Request): Promise<Response> {
-  if (req.method === 'OPTIONS') return json({}, 204);
-  if (req.method !== 'GET') return json({ success: false, error: 'Method not allowed' }, 405);
-
+export const GET = withJsonErrorHandling(async function handler(req: Request): Promise<Response> {
   const url  = new URL(req.url);
   const mode = url.searchParams.get('mode') || 'time';
 
@@ -40,3 +37,7 @@ export default withJsonErrorHandling(async function handler(req: Request): Promi
 
   return json({ success: true, leaderboard });
 });
+
+export function OPTIONS(): Response {
+  return json({}, 204);
+}

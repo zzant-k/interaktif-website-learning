@@ -2,10 +2,7 @@ import { getPool, hashPassword, json, withJsonErrorHandling } from '../_db.js';
 
 export const config = { runtime: 'nodejs' };
 
-export default withJsonErrorHandling(async function handler(req: Request): Promise<Response> {
-  if (req.method === 'OPTIONS') return json({}, 204);
-  if (req.method !== 'POST') return json({ success: false, error: 'Method not allowed' }, 405);
-
+export const POST = withJsonErrorHandling(async function handler(req: Request): Promise<Response> {
   const body = await req.json() as Record<string, unknown>;
   const nim      = String(body.nim      || '').trim().toUpperCase();
   const password = String(body.password || '');
@@ -49,4 +46,8 @@ export default withJsonErrorHandling(async function handler(req: Request): Promi
     },
   });
 });
+
+export function OPTIONS(): Response {
+  return json({}, 204);
+}
 
