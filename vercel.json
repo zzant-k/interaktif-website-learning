@@ -1,0 +1,11 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "rewrites": [
+    { "source": "/api/auth/register", "destination": "/api/auth/register" },
+    { "source": "/api/auth/login",    "destination": "/api/auth/login"    },
+    { "source": "/api/auth/sync",     "destination": "/api/auth/sync"     },
+    { "source": "/api/leaderboard",   "destination": "/api/leaderboard"   },
+    { "source": "/(.*)",              "destination": "/index.html"         }
+  ]
+}
