@@ -1,6 +1,6 @@
 import { CSS_LESSONS } from '../data/cssLessons';
 import { HTML_LESSONS } from '../data/htmlLessons';
-import { XP_REWARDS } from '../data/worlds';
+import { CSS_WORLD_LOCKED, XP_REWARDS } from '../data/worlds';
 import type { LevelStatus, WorldId } from '../types/lesson';
 import type {
   AchievementId,
@@ -140,6 +140,9 @@ export function getLevelStatus(
   world: WorldId,
   levelId: number
 ): LevelStatus {
+  if (world === 'css' && CSS_WORLD_LOCKED) {
+    return 'locked';
+  }
   const key = makeLevelKey(world, levelId);
   if (progress.completedLevels.includes(key)) {
     return 'completed';
@@ -189,9 +192,11 @@ export function getNextPlayableTarget(progress: PlayerProgress): {
     }
   }
 
-  for (const lesson of CSS_LESSONS) {
-    if (!progress.completedLevels.includes(makeLevelKey('css', lesson.id))) {
-      return { world: 'css', levelId: lesson.id };
+  if (!CSS_WORLD_LOCKED) {
+    for (const lesson of CSS_LESSONS) {
+      if (!progress.completedLevels.includes(makeLevelKey('css', lesson.id))) {
+        return { world: 'css', levelId: lesson.id };
+      }
     }
   }
 

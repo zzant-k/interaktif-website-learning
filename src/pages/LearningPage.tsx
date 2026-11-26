@@ -15,6 +15,7 @@ import {
   PixelStarIcon,
 } from '../components/PixelIcons';
 import { PixelProgressBar } from '../components/PixelProgressBar';
+import { CSS_WORLD_LOCKED } from '../data/worlds';
 import { formatSpeedrunTime } from '../services/supabaseAuth';
 import type { WorldId } from '../types/lesson';
 import type { CompletionReward, PlayerProgress } from '../types/progress';
@@ -115,6 +116,7 @@ export function LearningPage({
   const levelStatus = getLevelStatus(progress, world, lesson.id);
 
   if (levelStatus === 'locked') {
+    const isWorldLocked = world === 'css' && CSS_WORLD_LOCKED;
     return (
       <div className="mx-auto max-w-3xl px-4 py-12">
         <PixelCard tone="soft" className="text-center">
@@ -122,23 +124,52 @@ export function LearningPage({
             <PixelLockIcon size={28} />
           </div>
           <h1 className="font-pixel text-base text-navy sm:text-lg">
-            LEVEL {lesson.id} MASIH TERKUNCI
+            {isWorldLocked
+              ? 'CSS WORLD SEDANG TERKUNCI'
+              : `LEVEL ${lesson.id} MASIH TERKUNCI`}
           </h1>
           <p className="mt-3 text-sm leading-relaxed text-navy">
-            Selesaikan <strong>Level {lesson.id - 1}</strong> di{' '}
-            {world.toUpperCase()} World terlebih dahulu untuk membuka level ini.
+            {isWorldLocked ? (
+              <>
+                Dunia CSS saat ini masih dikunci sementara, termasuk setelah
+                HTML World selesai. Tunggu sampai dunia ini dibuka ya!
+              </>
+            ) : (
+              <>
+                Selesaikan <strong>Level {lesson.id - 1}</strong> di{' '}
+                {world.toUpperCase()} World terlebih dahulu untuk membuka level
+                ini.
+              </>
+            )}
           </p>
           <div className="mt-5 flex flex-wrap justify-center gap-3">
-            <PixelButton
-              to={`/learn/${world}/${lesson.id - 1}`}
-              variant="primary"
-              size="md"
-            >
-              BUKA LEVEL {lesson.id - 1}
-            </PixelButton>
-            <PixelButton to={`/world/${world}`} variant="secondary" size="md">
-              LIHAT PETA DUNIA
-            </PixelButton>
+            {isWorldLocked ? (
+              <>
+                <PixelButton to="/world/html" variant="primary" size="md">
+                  BUKA PETA HTML
+                </PixelButton>
+                <PixelButton to="/world" variant="secondary" size="md">
+                  PILIH DUNIA
+                </PixelButton>
+              </>
+            ) : (
+              <>
+                <PixelButton
+                  to={`/learn/${world}/${lesson.id - 1}`}
+                  variant="primary"
+                  size="md"
+                >
+                  BUKA LEVEL {lesson.id - 1}
+                </PixelButton>
+                <PixelButton
+                  to={`/world/${world}`}
+                  variant="secondary"
+                  size="md"
+                >
+                  LIHAT PETA DUNIA
+                </PixelButton>
+              </>
+            )}
           </div>
         </PixelCard>
       </div>

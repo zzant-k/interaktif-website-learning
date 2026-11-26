@@ -242,7 +242,7 @@ export function StudentAuthCard({
                     : 'bg-white text-navy/70 hover:bg-light-bg'
                 }`}
               >
-                DAFTAR AKUN BARU
+                DAFTAR
               </button>
             </div>
 

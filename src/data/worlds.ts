@@ -1,6 +1,9 @@
 import type { WorldInfo } from '../types/lesson';
 import type { AchievementDefinition } from '../types/progress';
 
+// Set to false when CSS World is ready to be opened to students
+export const CSS_WORLD_LOCKED = true;
+
 export const WORLDS: Record<'html' | 'css', WorldInfo> = {
   html: {
     id: 'html',

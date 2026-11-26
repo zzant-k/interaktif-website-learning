@@ -1,15 +1,16 @@
 import { LevelCard } from '../components/LevelCard';
 import { PixelBadge } from '../components/PixelBadge';
 import { PixelButton } from '../components/PixelButton';
+import { PixelCard } from '../components/PixelCard';
 import { PixelCharacter } from '../components/PixelCharacter';
-import { PixelTrophyIcon } from '../components/PixelIcons';
+import { PixelLockIcon, PixelTrophyIcon } from '../components/PixelIcons';
 import { PixelProgressBar } from '../components/PixelProgressBar';
 import {
   PixelBrickPlatform,
   PixelCitySkyline,
   PixelClouds,
 } from '../components/PixelScene';
-import { WORLDS } from '../data/worlds';
+import { CSS_WORLD_LOCKED, WORLDS } from '../data/worlds';
 import type { WorldId } from '../types/lesson';
 import type { PlayerProgress } from '../types/progress';
 import {
@@ -26,6 +27,45 @@ interface WorldMapPageProps {
 
 export function WorldMapPage({ world, progress }: WorldMapPageProps) {
   const worldInfo = WORLDS[world];
+
+  if (world === 'css' && CSS_WORLD_LOCKED) {
+    return (
+      <div className="mx-auto max-w-3xl px-4 py-12">
+        <PixelCard tone="soft" className="text-center">
+          <div className="mx-auto mb-3 inline-flex border-[3px] border-navy bg-lavender p-3">
+            <PixelLockIcon size={28} />
+          </div>
+          <h1 className="font-pixel text-base text-navy sm:text-lg">
+            CSS WORLD SEDANG TERKUNCI
+          </h1>
+          <p className="mt-3 text-sm leading-relaxed text-navy">
+            Dunia CSS saat ini masih dikunci sementara, termasuk setelah HTML
+            World selesai. Silakan lanjutkan atau ulangi misi di HTML World
+            sambil menunggu CSS World dibuka.
+          </p>
+          <div className="mt-5 flex flex-wrap justify-center gap-3">
+            <PixelButton
+              to="/world/html"
+              variant="primary"
+              size="md"
+              onClick={() => playSfx('click', progress.soundEnabled)}
+            >
+              BUKA PETA HTML
+            </PixelButton>
+            <PixelButton
+              to="/world"
+              variant="secondary"
+              size="md"
+              onClick={() => playSfx('click', progress.soundEnabled)}
+            >
+              PILIH DUNIA
+            </PixelButton>
+          </div>
+        </PixelCard>
+      </div>
+    );
+  }
+
   const lessons = getWorldLessons(world);
   const completedCount = getWorldCompletedCount(progress, world);
   const isWorldCleared = completedCount === lessons.length;

@@ -8,6 +8,7 @@ import { PixelDialog } from '../components/PixelDialog';
 import {
   PixelCheckIcon,
   PixelHeartIcon,
+  PixelLockIcon,
   PixelStarIcon,
   PixelTrophyIcon,
 } from '../components/PixelIcons';
@@ -22,7 +23,7 @@ import {
 import { StudentAuthCard } from '../components/StudentAuthCard';
 import { CSS_LESSONS } from '../data/cssLessons';
 import { HTML_LESSONS } from '../data/htmlLessons';
-import { WORLDS } from '../data/worlds';
+import { CSS_WORLD_LOCKED, WORLDS } from '../data/worlds';
 import type { StudentUser } from '../services/supabaseAuth';
 import type { PlayerProgress } from '../types/progress';
 import { getNextPlayableTarget } from '../utils/progressManager';
@@ -340,12 +341,28 @@ export function HomePage({
 
                 {/* CSS World RPG Card (stepped left on desktop) */}
                 <div className="flex justify-start">
-                  <div className="pixel-dialog-frame w-full bg-white p-5 lg:w-[74%]">
+                  <div
+                    className={`pixel-dialog-frame w-full p-5 lg:w-[74%] ${
+                      CSS_WORLD_LOCKED ? 'bg-lavender/45' : 'bg-white'
+                    }`}
+                  >
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <PixelBadge tone="pink">
-                        <PixelTrophyIcon size={14} />
-                        <span>DUNIA 2</span>
-                      </PixelBadge>
+                      <div className="flex flex-wrap items-center gap-2">
+                        <PixelBadge tone={CSS_WORLD_LOCKED ? 'lavender' : 'pink'}>
+                          {CSS_WORLD_LOCKED ? (
+                            <PixelLockIcon size={14} />
+                          ) : (
+                            <PixelTrophyIcon size={14} />
+                          )}
+                          <span>DUNIA 2</span>
+                        </PixelBadge>
+                        {CSS_WORLD_LOCKED && (
+                          <PixelBadge tone="lavender">
+                            <PixelLockIcon size={12} />
+                            <span>TERKUNCI</span>
+                          </PixelBadge>
+                        )}
+                      </div>
                       <span className="font-mono text-xs font-bold text-navy">
                         {cssCompleted}/{CSS_LESSONS.length} Level Selesai
                       </span>
@@ -354,7 +371,9 @@ export function HomePage({
                       {WORLDS.css.name}
                     </h3>
                     <p className="mt-2 text-sm leading-relaxed text-navy">
-                      {WORLDS.css.subtitle} {WORLDS.css.description}
+                      {CSS_WORLD_LOCKED
+                        ? 'CSS World sedang dikunci sementara. Selesaikan HTML World terlebih dahulu dan tunggu instruksi selanjutnya untuk membuka dunia ini!'
+                        : `${WORLDS.css.subtitle} ${WORLDS.css.description}`}
                     </p>
                     <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
                       <div className="w-full sm:max-w-[220px]">
@@ -365,14 +384,25 @@ export function HomePage({
                           fillTone="pink"
                         />
                       </div>
-                      <PixelButton
-                        to="/world/css"
-                        variant="accent"
-                        size="sm"
-                        onClick={() => playSfx('click', progress.soundEnabled)}
-                      >
-                        MASUK CSS WORLD
-                      </PixelButton>
+                      {CSS_WORLD_LOCKED ? (
+                        <PixelButton
+                          variant="secondary"
+                          size="sm"
+                          disabled
+                        >
+                          <PixelLockIcon size={14} />
+                          <span>MASIH TERKUNCI</span>
+                        </PixelButton>
+                      ) : (
+                        <PixelButton
+                          to="/world/css"
+                          variant="accent"
+                          size="sm"
+                          onClick={() => playSfx('click', progress.soundEnabled)}
+                        >
+                          MASUK CSS WORLD
+                        </PixelButton>
+                      )}
                     </div>
                   </div>
                 </div>
