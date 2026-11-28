@@ -1,11 +1,18 @@
 {
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
+  "crons": [
+    {
+      "path": "/api/keepalive",
+      "schedule": "0 2 * * *"
+    }
+  ],
   "rewrites": [
     { "source": "/api/auth/register", "destination": "/api/auth/register" },
     { "source": "/api/auth/login",    "destination": "/api/auth/login"    },
     { "source": "/api/auth/sync",     "destination": "/api/auth/sync"     },
     { "source": "/api/leaderboard",   "destination": "/api/leaderboard"   },
+    { "source": "/api/keepalive",     "destination": "/api/keepalive"     },
     { "source": "/(.*)",              "destination": "/index.html"         }
   ]
 }

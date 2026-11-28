@@ -316,6 +316,21 @@ export async function handleAuthApi(req: IncomingMessage, res: ServerResponse) {
       });
     }
 
+    // GET /api/keepalive
+    if (pathname === '/api/keepalive' && req.method === 'GET') {
+      const keepaliveRes = await pool.query(
+        'SELECT COUNT(*)::int AS total_users, NOW() AS db_time FROM public.users'
+      );
+      const row = keepaliveRes.rows[0];
+      return sendJson(res, 200, {
+        success: true,
+        status: 'alive',
+        totalUsers: Number(row?.total_users) || 0,
+        dbTime: row?.db_time,
+        checkedAt: new Date().toISOString(),
+      });
+    }
+
     return sendJson(res, 404, { success: false, error: 'Endpoint tidak ditemukan.' });
   } catch (err: unknown) {
     console.error('API Error:', err);
